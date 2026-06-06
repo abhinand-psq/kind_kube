@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react';
 
 function App() {
-  const baseUrl = import.meta.env.BACKEND_URL || 'http://localhost:5000';
-
-  const [apiUrl, setApiUrl] = useState(`${baseUrl}/api/users`);
+ 
+  const [apiUrl, setApiUrl] = useState(`/api/users`);
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -11,14 +10,15 @@ function App() {
 
   // Quick templates list
   const templates = [
-    { name: 'Get Collections', url: `${baseUrl}/api/collections` },
-    { name: 'Get Users', url: `${baseUrl}/api/users` },
-    { name: 'Get Communities', url: `${baseUrl}/api/communities` },
-    { name: 'Get Shops', url: `${baseUrl}/api/shops` }
+    { name: 'Get Collections', url: `/api/collections` },
+    { name: 'Get Users', url: `/api/users` },
+    { name: 'Get Communities', url: `/api/communities` },
+    { name: 'Get Shops', url: `/api/shops` }
   ];
 
   // Primary fetch handler
   const handleFetch = async (urlToFetch = apiUrl) => {
+   console.log(`Initiating fetch to: ${urlToFetch}`);
     setLoading(true);
     setError(null);
     setData(null);
@@ -26,6 +26,8 @@ function App() {
 
     try {
       const response = await fetch(urlToFetch);
+      console.log(response);
+       setApiUrl(response.url)
       const resData = await response.json();
 
       if (!response.ok) {
